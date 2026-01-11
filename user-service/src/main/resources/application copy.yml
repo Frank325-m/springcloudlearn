@@ -1,0 +1,31 @@
+server:
+  port: 8081 # 用户服务端口
+
+spring:
+  application:
+    name: user-service # 服务名称（Nacos注册的服务名）
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.33:8848
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.1.33:3306/lear_springcloud?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+
+# Nacos原生配置
+nacos:
+  server-addr: 192.168.1.33:8848 # Nacos地址
+
+# MyBatis-Plus配置
+mybatis-plus:
+  type-aliases-package: com.learn.entity   # 实体类包路径
+  mapper-locations: classpath:mapper/*.xml   # Mapper.xml文件路径（如果有）
+  configuration:
+    map-underscore-to-camel-case: true   # 下划线转驼峰（如数据库user_name → 实体类userName）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 打印SQL（开发环境方便调试）
+  global-config:  # 主键生成策略（雪花算法）
+    db-config:
+      id-type: ASSIGN_ID
