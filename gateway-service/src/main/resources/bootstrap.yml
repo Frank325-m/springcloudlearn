@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: gateway-service
+  profiles:
+    active: default     # 明确激活默认环境（避免profile问题）
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.1.33:8848  # 你的Nacos地址
+        file-extension: yml  # 配置文件格式
+        namespace: public   # 命名空间（默认public）
+        group: DEFAULT_GROUP # 分组（默认）
+        # 可选：指定额外的配置文件（比如单独的路由配置）
+        extension-configs:
+          - data-id: gateway-routes.yml  # 单独的路由规则配置文件
+            group: DEFAULT_GROUP
+            refresh: true                # 支持热更新
+      discovery:  # Nacos服务发现配置（原有，可保留）
+        server-addr: 192.168.1.33:8848
+        username: nacos
+        password: nacos

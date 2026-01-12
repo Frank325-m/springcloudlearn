@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +23,19 @@ import com.learn.user.service.UserService;
 
 @RestController
 @RequestMapping("/user")
+@RefreshScope  // 关键：开启配置热更新，Nacos配置修改后自动刷新
 public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Value("${user.service.desc:默认描述}")
+    private String serviceDesc;
+
+    @GetMapping("/desc")
+    public String getServiceDesc() {
+        return "服务描述：" + serviceDesc;
+    }
 
     // @Resource
     // private UserMapper userMapper;

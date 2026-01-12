@@ -2,6 +2,8 @@ package com.learn.order.controller;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import com.learn.order.mapper.OrderMapper;
 
 @RestController
 @RequestMapping("/order")
+@RefreshScope
 public class OrderController {
 
     @Resource
@@ -22,6 +25,9 @@ public class OrderController {
     
     @Resource
     private UserFeignClient userFeignClient;
+
+    @Value("${order.service.desc:默认描述}") // 配置不存在时用默认值
+    private String serviceDesc;
 
     @GetMapping("/get/{id}")
     public OrderUserOV getOrderById(@PathVariable("id") Long id) {
@@ -38,5 +44,10 @@ public class OrderController {
         result.setUser(user);
 
         return result;
+    }
+
+    @GetMapping("desc")
+    public String getServiceDesc() {
+        return "服务描述：" + serviceDesc;
     }
 }

@@ -9,7 +9,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /app
 
 # 将本地jar包复制到容器内（注意jar包名称要和打包后的一致）
-COPY target/gateway-service-1.0-SNAPSHOT.jar /app/gateway-service.jar
+COPY target/gateway-service-1.0.0.jar /app/gateway-service.jar
 
 # 暴露服务端口（gateway-service用19000）
 EXPOSE 19000

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: user-service
+  profiles:
+    active: default     # 明确激活默认环境（避免profile问题）
+  cloud:
+    nacos:  
+      config:  # Nacos配置中心配置
+        server-addr: 192.168.1.33:8848   # Nacos宿主机IP
+        file-extension: yml  # 配置文件格式
+        namespace: public   # 命名空间（默认public）
+        group: DEFAULT_GROUP # 分组（默认）
+      discovery:  # Nacos服务发现配置（原有，可保留）
+        server-addr: 192.168.1.33:8848
+        username: nacos
+        password: nacos

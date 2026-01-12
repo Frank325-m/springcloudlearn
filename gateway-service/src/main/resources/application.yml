@@ -1,35 +1,6 @@
-# 网关端口
-server:
-  port: 19000
-
 spring:
-  application:
-    name: gateway-service
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 192.168.1.33:8848  # 你的Nacos地址
-    gateway:
-      routes:
-        # 路由1：转发到user-service
-        - id: user-service-route
-          uri: lb://user-service  # lb=负载均衡，指向Nacos中的user-service
-          predicates:
-            - Path=/user/**  # 匹配/user开头的请求
-        # 路由2：转发到order-service
-        - id: order-service-route
-          uri: lb://order-service
-          predicates:
-            - Path=/order/**  # 匹配/order开头的请求
   loadbalancer:
       cache:
         enabled: false  # 关闭实例缓存
       nacos:
         enabled: true   # 开启Nacos负载均衡适配
-
-# 关键：开启Gateway详细日志
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG  # 打印网关转发日志
-    com.alibaba.nacos.client.naming: DEBUG    # 打印Nacos服务发现日志
-    org.springframework.web.reactive: DEBUG   # 打印WebFlux请求日志

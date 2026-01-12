@@ -16,6 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrderServiceApplication.class, args);
-        System.out.println("Hello world!");
+        log.info("===== Order Service Start! Port is 8082 =====");
     }
 }

@@ -1,25 +1,12 @@
-server:
-  port: 8082 # 订单服务端口
-
 spring:
-  application:
-    name: order-service # 服务名称
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.1.33:8848 # Nacos地址
-        namespace: public
         timeout: 10000  # 增加注册超时配置（核心：解决STARTING状态问题）
         heart-beat-interval: 5000
         heart-beat-timeout: 15000
         ephemeral: false   # 关闭EPHEMERAL（临时实例），避免注册失败
         fail-fast: false   # 新增：关闭SpringCloud的快速失败机制
-  # 数据库配置（和user-service用同一个库或单独库）
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.33:3306/learn_springcloud?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
 
 # Feign配置（可选）
 feign:
@@ -29,8 +16,6 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
 
-mybatis-plus:
-  type-aliases-package: com.learn.order.entity
-  configuration:
-    map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    com.learn.order.mapper: debug  # 确认mapper包路径正确
