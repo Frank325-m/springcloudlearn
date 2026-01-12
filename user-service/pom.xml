@@ -49,9 +49,22 @@
     <!-- 构建配置：打包为可执行jar -->
     <build>
         <plugins>
+            <!-- SpringBoot打包插件（核心，解决main manifest问题） -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.0</version> <!-- 和你的SpringBoot版本一致 -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal> <!-- 重新打包为可执行jar -->
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- 可选：指定启动类（如果插件自动识别失败） -->
+                <configuration>
+                    <mainClass>com.learn.user.UserServiceApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
