@@ -49,6 +49,25 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- Sentinel核心依赖 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <version>2021.1</version>
+        </dependency>
+        <!-- Sentinel注解支持（@SentinelResource） -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-annotation-aspectj</artifactId>
+            <version>1.8.5</version>
+        </dependency>
+        <!-- 关键缺失依赖：Sentinel Nacos数据源适配包 -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+            <version>1.8.5</version>  <!-- 和Sentinel Dashboard版本一致（1.8.5） -->
+        </dependency>
+
         <!-- MyBatis-Plus（操作数据库） -->
         <dependency>
             <groupId>com.baomidou</groupId>

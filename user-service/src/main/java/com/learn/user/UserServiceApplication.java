@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+import com.alibaba.cloud.sentinel.SentinelWebAutoConfiguration;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -16,7 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @EnableDiscoveryClient // 官方标准注解，Maven可解析  // 开启服务注册发现(向Nacos注册)
 @MapperScan("com.learn.user.mapper")   // 扫描Mapper接口
-@SpringBootApplication
+// 核心：排除SentinelWebAutoConfiguration，解决循环依赖
+@SpringBootApplication(exclude = {SentinelWebAutoConfiguration.class})
 public class UserServiceApplication {
     public static void main(String[] args) throws InterruptedException {
         // 启动Spring容器

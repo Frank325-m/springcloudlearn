@@ -10,6 +10,7 @@ spring:
         file-extension: yml  # 配置文件格式
         namespace: public   # 命名空间（默认public）
         group: DEFAULT_GROUP # 分组（默认）
+        prefix: gateway
         # 可选：指定额外的配置文件（比如单独的路由配置）
         extension-configs:
           - data-id: gateway-routes.yml  # 单独的路由规则配置文件
@@ -19,3 +20,19 @@ spring:
         server-addr: 192.168.1.33:8848
         username: nacos
         password: nacos
+        timeout: 10000  # 增加注册超时配置（核心：解决STARTING状态问题）
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+        ephemeral: false   # 关闭EPHEMERAL（临时实例），避免注册失败
+        fail-fast: false   # 新增：关闭SpringCloud的快速失败机制
+    sentinel:
+      transport:
+        dashboard: 192.168.1.33:8858  # Sentinel Dashboard地址
+        port: 8721  # 和Dashboard通信的端口（默认8719，若被占用可改）
+      datasource:
+        ds1:
+          nacos:
+            server-addr: 192.168.1.33:8848
+            data-id: gateway-service-sentinel-rules
+            group-id: DEFAULT_GROUP
+            rule-type: gw_flow

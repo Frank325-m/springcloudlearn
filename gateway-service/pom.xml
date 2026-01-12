@@ -12,11 +12,7 @@
     <groupId>com.learn.gateway</groupId>
     <artifactId>gateway-service</artifactId>
     <version>1.0.0</version>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -41,6 +37,32 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
             <version>3.1.0</version> <!-- 适配SpringBoot 2.7.x，和SpringCloud版本匹配 -->
+        </dependency>
+
+        <!-- Gateway集成Sentinel核心依赖（必须用这个，不是普通的sentinel依赖） -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+            <version>2021.1</version>
+        </dependency>
+        <!-- Sentinel核心依赖（基础） -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <version>2021.1</version>
+        </dependency>
+
+        <!-- Sentinel注解支持（@SentinelResource） -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-annotation-aspectj</artifactId>
+            <version>1.8.5</version>
+        </dependency>
+        <!-- 关键缺失依赖：Sentinel Nacos数据源适配包 -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+            <version>1.8.5</version>  <!-- 和Sentinel Dashboard版本一致（1.8.5） -->
         </dependency>
 
         <!-- 必须添加：负载均衡依赖，支持lb://解析 -->

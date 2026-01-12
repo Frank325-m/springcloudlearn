@@ -1,21 +1,5 @@
-spring:
-  cloud:
-    nacos:
-      discovery:
-        timeout: 10000  # 增加注册超时配置（核心：解决STARTING状态问题）
-        heart-beat-interval: 5000
-        heart-beat-timeout: 15000
-        ephemeral: false   # 关闭EPHEMERAL（临时实例），避免注册失败
-        fail-fast: false   # 新增：关闭SpringCloud的快速失败机制
-
-# Feign配置（可选）
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-
-logging:
-  level:
-    com.learn.order.mapper: debug  # 确认mapper包路径正确
+mybatis-plus:  # MyBatis-Plus配置
+  type-aliases-package: com.learn.order.entity   # 实体类包路径
+  configuration:
+    map-underscore-to-camel-case: true   # 下划线转驼峰（如数据库user_name → 实体类userName）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 打印SQL（开发环境方便调试）

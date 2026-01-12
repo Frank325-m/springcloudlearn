@@ -14,3 +14,28 @@ spring:
         server-addr: 192.168.1.33:8848
         username: nacos
         password: nacos
+        timeout: 10000  # 增加注册超时配置（核心：解决STARTING状态问题）
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+        ephemeral: false   # 关闭EPHEMERAL（临时实例），避免注册失败
+        fail-fast: false   # 新增：关闭SpringCloud的快速失败机制
+    sentinel:
+      transport:
+        dashboard: 192.168.1.33:8858  # Sentinel Dashboard地址
+        port: 8720  # 和Dashboard通信的端口（默认8719，若被占用可改）
+      datasource:  # 规则持久化到Nacos（避免重启丢失规则）
+        ds1:
+          nacos:
+            server-addr: 192.168.1.33:8848
+            data-id: order-service-sentinel-rules
+            group-id: DEFAULT_GROUP
+            rule-type: flow
+feign:  # Feign配置（可选）
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+logging:
+  level:
+    com.learn.order.mapper: debug  # 确认mapper包路径正确

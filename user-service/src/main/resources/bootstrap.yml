@@ -4,13 +4,29 @@ spring:
   profiles:
     active: default     # 明确激活默认环境（避免profile问题）
   cloud:
-    nacos:  
-      config:  # Nacos配置中心配置
-        server-addr: 192.168.1.33:8848   # Nacos宿主机IP
-        file-extension: yml  # 配置文件格式
-        namespace: public   # 命名空间（默认public）
-        group: DEFAULT_GROUP # 分组（默认）
+    nacos:
+      config:
+        server-addr: 192.168.1.33:8848
+        file-extension: yml
+        namespace: public
+        group: DEFAULT_GROUP
+        # 明确指定配置文件前缀，避免加载多余配置
+        prefix: user-service
       discovery:  # Nacos服务发现配置（原有，可保留）
         server-addr: 192.168.1.33:8848
         username: nacos
         password: nacos
+    sentinel:
+      transport:
+        dashboard: 192.168.1.33:8858  # Sentinel Dashboard地址
+        port: 8719  # 和Dashboard通信的端口（默认8719，若被占用可改）
+      datasource:  # 规则持久化到Nacos（避免重启丢失规则）
+        ds1:
+          nacos:
+            server-addr: 192.168.1.33:8848
+            data-id: user-service-sentinel-rules
+            group-id: DEFAULT_GROUP
+            rule-type: flow
+logging:
+  level:
+    com.learn.user.mapper: info

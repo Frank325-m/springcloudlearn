@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.learn.user.common.Result;
 import com.learn.user.entity.User;
 // import com.learn.user.mapper.UserMapper;
@@ -43,7 +45,13 @@ public class UserController {
     /**
      * 根据ID查询用户
      */
+    // 核心接口：添加Sentinel限流+降级
     @GetMapping("/get/{id}")
+    @SentinelResource(
+        value="user-get", // 资源名（唯一标识）
+        blockHandler="userGetBlockHandler",  // 限流兜底方法
+        fallback="userGetFallback" // 异常降级兜底方法
+    )
     public Result<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         // User user = userMapper.selectById(id);
@@ -97,6 +105,27 @@ public class UserController {
         List<User> users = userService.getUserList();
         // List<User> users = userMapper.selectList(null);
         return Result.success(users);
+    }
+
+    // 限流兜底方法（参数和返回值要和原方法一致，额外加BlockException）
+    public Result<User> userGetBlockHandler(Long id, BlockException e) {
+        Result<User> fallbackUser = new Result<>();
+        User user= new User();
+        user.setId(id);
+        fallbackUser.setCode(406);
+        fallbackUser.setMsg("接口访问过于频繁，请稍后再试（限流兜底）");
+        return fallbackUser;
+    }
+
+    // 异常降级兜底方法（参数和返回值要和原方法一致，额外加Throwable）
+    public Result<User> userGetFallback(Long id, Throwable e) {
+        Result<User> fallbackUser = new Result<>();
+        User user= new User();
+        user.setId(id);
+        fallbackUser.setCode(407);
+        fallbackUser.setMsg("用户服务异常：请稍后再试,(降级兜底）");
+        fallbackUser.setData(user);
+        return fallbackUser;
     }
 
 }
