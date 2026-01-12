@@ -1,4 +1,4 @@
-package com.learn.common;
+package com.learn.user.common;
 
 import java.io.Serializable;
 

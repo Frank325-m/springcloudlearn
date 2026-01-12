@@ -1,9 +1,9 @@
-package com.learn.mapper;
+package com.learn.user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.learn.entity.User;
+import com.learn.user.entity.User;
 
 /**
  * 用户Mapper接口

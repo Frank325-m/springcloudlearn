@@ -21,12 +21,15 @@
         <!-- SpringCloudAlibaba版本（核心微服务组件）2023.0.1.0（适配3.2.1） -->
         <!-- <spring-cloud-alibaba.version>2023.0.1.0</spring-cloud-alibaba.version> -->
 		<spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+		<spring-cloud.version>2021.0.5</spring-cloud.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <mysql.version>8.0.33</mysql.version> <!-- 新增MySQL版本 -->
     </properties>
 
 	<!-- 添加子模块列表（后续创建子模块后补充） -->
 	<modules>
 		<module>user-service</module>
-		<!-- <module>order-service</module> -->
+		<module>order-service</module>
 	</modules>
 
 	<!-- 依赖版本锁定:子模块直接引用，无需写版本号 -->
@@ -51,13 +54,27 @@
 			</dependency>
 
 			<!-- SpringCloud依赖 （OpenFeign/Gateway等）  -->
-			<!-- <dependency>
+			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency> -->
+			</dependency>
+
+			<!-- MyBatis-Plus版本 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- MySQL驱动版本（新增） -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 	

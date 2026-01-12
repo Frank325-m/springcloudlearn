@@ -1,4 +1,4 @@
-package com.learn;
+package com.learn.user;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @EnableDiscoveryClient // 官方标准注解，Maven可解析  // 开启服务注册发现(向Nacos注册)
-@MapperScan("com.learn.mapper")   // 扫描Mapper接口
+@MapperScan("com.learn.user.mapper")   // 扫描Mapper接口
 @SpringBootApplication
 public class UserServiceApplication {
     public static void main(String[] args) throws InterruptedException {

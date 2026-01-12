@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS learn_springcloud;
 
 USE learn_springcloud;
 
-CREATE TABLE `user` (
+CREATE TABLE `t_user` (
   `id` bigint NOT NULL COMMENT '主键',
   `username` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(50) DEFAULT NULL COMMENT '密码',
@@ -15,3 +15,6 @@ CREATE TABLE `user` (
 
 -- 插入测试数据
 INSERT INTO `user` VALUES (1, 'zhangsan', '123456', 20, 'zhangsan@test.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- 重命名原有表（保留数据）
+ALTER TABLE `user` RENAME TO `t_user`;

@@ -1,4 +1,4 @@
-package com.learn.nacos;
+package com.learn.user.nacos;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

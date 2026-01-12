@@ -1,8 +1,9 @@
-package com.learn.entity;
+package com.learn.user.entity;
 
 import java.io.Serializable;
-// import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
 
@@ -11,6 +12,7 @@ import lombok.Data;
  * 对应数据库user表
  */
 @Data
+@TableName("t_user")  // 关键：指定数据库表名
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;  // 主键（雪花算法生成）

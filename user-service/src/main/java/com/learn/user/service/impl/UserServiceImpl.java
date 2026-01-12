@@ -1,15 +1,15 @@
-package com.learn.service.impl;
+package com.learn.user.service.impl;
 
 import javax.annotation.Resource;
 
-// import java.util.List;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-// import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.learn.entity.User;
-import com.learn.mapper.UserMapper;
-import com.learn.service.UserService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.learn.user.entity.User;
+import com.learn.user.mapper.UserMapper;
+import com.learn.user.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
         // MyBatis-Plus内置方法，根据ID查询
         return userMapper.selectById(id);
     }
-/*
+
     @Override
     public int addUser(User user) {
         // 新增用户
@@ -45,5 +45,4 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserList() {
         return userMapper.selectList(Wrappers.emptyWrapper());
     }
-     */
 }

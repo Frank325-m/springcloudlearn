@@ -1,8 +1,8 @@
-package com.learn.service;
+package com.learn.user.service;
 
-// import java.util.List;
+import java.util.List;
 
-import com.learn.entity.User;
+import com.learn.user.entity.User;
 
 /**
  * 用户业务层接口
@@ -17,21 +17,21 @@ public interface UserService {
     /**
      * 新增用户
      */
-    // int addUser(User user);
+    int addUser(User user);
 
     /**
      * 修改用户
      */
-    // int updateUser(User user);
+    int updateUser(User user);
 
     /**
      * 删除用户
      */
-    // int deleteUser(Long id);
+    int deleteUser(Long id);
 
     /**
      * 获取所有用户列表
      */
-    // List<User> getUserList();
+    List<User> getUserList();
     
 }
