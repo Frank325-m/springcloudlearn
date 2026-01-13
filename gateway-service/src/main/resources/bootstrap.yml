@@ -5,34 +5,39 @@ spring:
     active: default     # 明确激活默认环境（避免profile问题）
   cloud:
     nacos:
+      discovery:  # Nacos服务发现配置（原有，可保留）
+        server-addr: 192.168.1.33:8848
+        # 若Nacos开启了登录认证，需添加（禁用则注释）
+        # username: nacos
+        # password: 你的Nacos密码
+        timeout: 10000  # 增加注册超时配置（核心：解决STARTING状态问题）
+        enable-remote-config: true # 2.5.2适配：启用gRPC（默认开启，无需改）
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+        ephemeral: true   # 关闭EPHEMERAL（临时实例），避免注册失败
+        fail-fast: false   # 新增：关闭SpringCloud的快速失败机制
+        # 可选：服务注册的元数据（自定义）
+        metadata:
+          version: 1.0
+          author: demo
       config:
         server-addr: 192.168.1.33:8848  # 你的Nacos地址
         file-extension: yml  # 配置文件格式
         namespace: public   # 命名空间（默认public）
         group: DEFAULT_GROUP # 分组（默认）
-        prefix: gateway
+        # 若Nacos开启了登录认证，需添加（禁用则注释）
+        # username: nacos
+        # password: 你的Nacos密码
         # 可选：指定额外的配置文件（比如单独的路由配置）
         extension-configs:
           - data-id: gateway-routes.yml  # 单独的路由规则配置文件
             group: DEFAULT_GROUP
             refresh: true                # 支持热更新
-      discovery:  # Nacos服务发现配置（原有，可保留）
-        server-addr: 192.168.1.33:8848
-        username: nacos
-        password: nacos
-        timeout: 10000  # 增加注册超时配置（核心：解决STARTING状态问题）
-        heart-beat-interval: 5000
-        heart-beat-timeout: 15000
-        ephemeral: false   # 关闭EPHEMERAL（临时实例），避免注册失败
-        fail-fast: false   # 新增：关闭SpringCloud的快速失败机制
-    sentinel:
-      transport:
-        dashboard: 192.168.1.33:8858  # Sentinel Dashboard地址
-        port: 8721  # 和Dashboard通信的端口（默认8719，若被占用可改）
-      datasource:
-        ds1:
-          nacos:
-            server-addr: 192.168.1.33:8848
-            data-id: gateway-service-sentinel-rules
-            group-id: DEFAULT_GROUP
-            rule-type: gw_flow
+        # 若需要热更新配置，开启（Nacos配置修改后，应用自动刷新）
+        # refresh:
+        #   enabled: true  
+    loadbalancer:
+      cache:
+        enabled: false  # 关闭实例缓存
+      nacos:
+        enabled: true   # 开启Nacos负载均衡适配

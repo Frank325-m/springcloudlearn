@@ -1,6 +1,10 @@
-spring:
-  loadbalancer:
-      cache:
-        enabled: false  # 关闭实例缓存
-      nacos:
-        enabled: true   # 开启Nacos负载均衡适配
+# 关键：开启Gateway详细日志 # 日志配置（可选，便于调试）
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO  # 打印网关转发日志
+    com.alibaba.nacos.client.naming: INFO    # 打印Nacos服务发现日志
+    org.springframework.web.reactive: INFO   # 打印WebFlux请求日志
+    # 精准关闭 ClientWorker 的 INFO 日志（核心配置）
+    com.alibaba.nacos.client.config.impl.ClientWorker: WARN
+    com.alibaba.nacos: INFO
+    org.springframework.cloud: INFO

@@ -9,7 +9,7 @@
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>springcloud-learn</name>
-	<description>SpringCloud父工程</description>
+	<description>SpringCloud parent project</description>
 	
 	<!-- 全局属性：统一版本号，便于维护 -->
     <properties>
@@ -18,8 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- SpringBoot版本（和SpringCloudAlibaba匹配） -->
         <spring-boot.version>2.7.18</spring-boot.version>
-        <!-- SpringCloudAlibaba版本（核心微服务组件）2023.0.1.0（适配3.2.1） -->
-        <!-- <spring-cloud-alibaba.version>2023.0.1.0</spring-cloud-alibaba.version> -->
+        <!-- SpringCloudAlibaba版本（核心微服务组件） -->
 		<spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
@@ -45,7 +44,7 @@
 				<scope>import</scope>
 			</dependency>
 
-			<!-- SpringCloudAlibaba 依赖 （Nacos/Seata/Sentinel等） -->
+			<!-- SpringCloudAlibaba 核心依赖 （Nacos/Seata/Sentinel等） -->
 			<dependency>
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -54,7 +53,7 @@
 				<scope>import</scope>
 			</dependency>
 
-			<!-- SpringCloud依赖 （OpenFeign/Gateway等）  -->
+			<!-- SpringCloud 核心依赖 （OpenFeign/Gateway等）  -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>

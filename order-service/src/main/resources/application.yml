@@ -1,5 +1,3 @@
-mybatis-plus:  # MyBatis-Plus配置
-  type-aliases-package: com.learn.order.entity   # 实体类包路径
-  configuration:
-    map-underscore-to-camel-case: true   # 下划线转驼峰（如数据库user_name → 实体类userName）
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 打印SQL（开发环境方便调试）
+logging:
+  level:
+    com.learn.order.mapper: debug  # 确认mapper包路径正确

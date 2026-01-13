@@ -62,7 +62,8 @@ public class OrderController {
         // 查询订单
         Order order = orderMapper.selectById(id);
         // 远程调用user-service（核心：给远程调用加降级）
-        User user = restTemplate.getForObject("http://user-service/user/get/" + order.getUserId(), User.class);
+        // User user = restTemplate.getForObject("http://user-service/user/get/" + order.getUserId(), User.class);
+        User user = userFeignClient.getUserById(order.getUserId());
         return "订单信息：" + order + " | 用户信息：" + user;
     }
 

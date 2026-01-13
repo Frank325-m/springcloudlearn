@@ -1,5 +1,7 @@
 package com.learn.order;
 
+import java.util.concurrent.TimeUnit;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,8 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 @EnableFeignClients(basePackages="com.learn.order.feign") // 扫描feign包
 @MapperScan("com.learn.order.mapper") // 扫描mapper
 public class OrderServiceApplication {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(OrderServiceApplication.class, args);
+        TimeUnit.SECONDS.sleep(2);
         log.info("===== Order Service Start! Port is 8082 =====");
     }
 

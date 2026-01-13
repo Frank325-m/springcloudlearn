@@ -24,31 +24,40 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!-- Nacos服务注册发现 （直接引入，绕过SpringCloud封装） -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <!-- 版本和nacos-discovery保持一致，建议用2021.1适配SpringBoot2.7 -->
-            <version>2021.1</version>
-        </dependency>
-
         <!-- 关键：让bootstrap.yml生效的依赖（SpringBoot 2.4+必需） -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
             <version>3.1.0</version> <!-- 适配SpringBoot 2.7.x，和SpringCloud版本匹配 -->
         </dependency>
-
         <!-- Feign远程调用 无需加版本，继承父工程（可选，调用user-service） -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!-- Nacos服务注册发现 （直接引入，绕过SpringCloud封装） -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba.nacos</groupId>
+                    <artifactId>nacos-client</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 手动引入2.5.2客户端 -->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>2.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <!-- 版本和nacos-discovery保持一致，建议用2021.1适配SpringBoot2.7 -->
+            <version>2021.1</version>
         </dependency>
 
         <!-- Sentinel核心依赖 -->
@@ -61,20 +70,19 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-annotation-aspectj</artifactId>
-            <version>1.8.5</version>
+            <version>1.8.9</version>
         </dependency>
         <!-- 关键缺失依赖：Sentinel Nacos数据源适配包 -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
-            <version>1.8.5</version>  <!-- 和Sentinel Dashboard版本一致（1.8.5） -->
+            <version>1.8.9</version>  <!-- 和Sentinel Dashboard版本一致（1.8.9） -->
         </dependency>
 
         <!-- MyBatis-Plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.3.1</version>
         </dependency>
 
         <!-- MySQL驱动 -->

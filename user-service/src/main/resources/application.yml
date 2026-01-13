@@ -1,5 +1,9 @@
-mybatis-plus:  # MyBatis-Plus配置
-  type-aliases-package: com.learn.user.entity   # 实体类包路径
-  configuration:
-    map-underscore-to-camel-case: true   # 下划线转驼峰（如数据库user_name → 实体类userName）
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 打印SQL（开发环境方便调试）
+logging:
+  level:
+    # org.springframework.cloud.gateway: INFO  # 打印网关转发日志
+    org.springframework.cloud: INFO
+    org.springframework.web.reactive: INFO   # 打印WebFlux请求日志
+    com.alibaba.nacos.client.naming: INFO    # 打印Nacos服务发现日志
+    com.alibaba.nacos.client.config.impl.ClientWorker: WARN  # 精准关闭 ClientWorker 的 INFO 日志（核心配置）
+    com.alibaba.nacos: INFO
+    com.learn.user.mapper: INFO
