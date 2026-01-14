@@ -1,7 +1,11 @@
 package com.learn.order.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.learn.order.common.Result;
+import com.learn.order.config.SentinelRuleChecker;
 import com.learn.order.entity.Order;
 import com.learn.order.entity.OrderUserOV;
 import com.learn.order.entity.User;
@@ -22,49 +28,57 @@ import com.learn.order.mapper.OrderMapper;
 @RequestMapping("/order")
 @RefreshScope
 public class OrderController {
-
-    @Resource
-    private RestTemplate restTemplate;
-
     @Resource
     private OrderMapper orderMapper;
     
     @Resource
     private UserFeignClient userFeignClient;
+    @Resource
+    private RestTemplate restTemplate;
+    @Autowired
+    SentinelRuleChecker sentinelRuleChecker;
 
     @Value("${order.service.desc:默认描述}") // 配置不存在时用默认值
     private String serviceDesc;
+    @GetMapping("desc")
+    public String getServiceDesc() {
+        return "服务描述：" + serviceDesc;
+    }
 
     @GetMapping("/get/{id}")
+    @SentinelResource( value = "order-get",
+                    blockHandler = "orderGetBlockHandler",
+                    fallback = "orderGetFallback")
     public OrderUserOV getOrderById(@PathVariable("id") Long id) {
-        Order order = orderMapper.selectById(id);
-        if (order == null) {
-            //return "订单不存在";
-            return null;
-        }
-
-        User user = userFeignClient.getUserById(order.getUserId());
-
+        sentinelRuleChecker.checkSentinelRules();
         OrderUserOV result = new OrderUserOV();
-        result.setOrder(order);
-        result.setUser(user);
+        Order order = orderMapper.selectById(id);
+        if (order == null) {  //return "订单不存在";
+            result.setOrder(null);
+            result.setUser(null);
+        } else {
+            // 远程调用user-service（核心：给远程调用加降级）
+            // User user = restTemplate.getForObject("http://user-service/user/get/" + order.getUserId(), User.class);
+            Result<User> r_user = userFeignClient.getUserById(order.getUserId());
+            result.setOrder(order);
+            result.setUser(r_user.getData());
+        }
 
         return result;
     }
 
-    @GetMapping("/sget/{id}")
-    @SentinelResource(
-            value = "order-get",
-            blockHandler = "orderGetBlockHandler",
-            fallback = "orderGetFallback"
-    )
-    public String s_getOrderById(@PathVariable("id") Long id) {
-        // 查询订单
-        Order order = orderMapper.selectById(id);
-        // 远程调用user-service（核心：给远程调用加降级）
-        // User user = restTemplate.getForObject("http://user-service/user/get/" + order.getUserId(), User.class);
-        User user = userFeignClient.getUserById(order.getUserId());
-        return "订单信息：" + order + " | 用户信息：" + user;
+    // OrderController新增接口
+    @GetMapping("/getUserAndOrder/{orderId}")
+    public Map<String, Object> getUserAndOrder(@PathVariable Long orderId) {
+        // 1.查询订单
+        Order order = orderMapper.selectById(orderId);
+        // 2.根据订单中的userId调用UserService查询用户
+        Result<User> r_user = userFeignClient.getUserById(order.getUserId());
+        // 3.组装结果
+        Map<String, Object> result = new HashMap<>();
+        result.put("order", order);
+        result.put("user", r_user.getData());
+        return result;
     }
 
     // 限流兜底
@@ -78,8 +92,4 @@ public class OrderController {
         return "订单信息：" + order + " | 用户信息：用户服务暂不可用（降级兜底）";
     }
 
-    @GetMapping("desc")
-    public String getServiceDesc() {
-        return "服务描述：" + serviceDesc;
-    }
 }

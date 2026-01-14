@@ -3,6 +3,8 @@ package com.learn.order.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
@@ -15,6 +17,7 @@ import lombok.Data;
 @TableName("t_user")  // 关键：指定数据库表名
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
+    @TableId(type = IdType.AUTO)
     private Long id;  // 主键（雪花算法生成）
     private String username;  // 用户名
     private String password;  // 密码

@@ -1,3 +1,27 @@
+# application.yml（业务配置）
+# server:
+#   port: 8081
+# spring:
+#   datasource:
+#     driver-class-name: com.mysql.cj.jdbc.Driver
+#     url: jdbc:mysql://192.168.1.33:3306/microservice_user?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#     username: root
+#     password: 123456
+# mybatis-plus:
+#   mapper-locations: classpath:mapper/*.xml
+#   type-aliases-package: com.learn.user.entity
+#   configuration:
+#     map-underscore-to-camel-case: true
+#     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# # Sentinel配置
+# spring:
+#   cloud:
+#     sentinel:
+#       transport:
+#         dashboard: 192.168.1.33:8858
+#         port: 8719 # 与Gateway/OrderService端口区分
+###################################################################################
+####### 配置到Nocas config中去了 user-service.yml
 logging:
   level:
     # org.springframework.cloud.gateway: INFO  # 打印网关转发日志

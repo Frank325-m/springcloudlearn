@@ -7,12 +7,9 @@ spring:
     nacos:
       discovery:  # Nacos服务发现配置（原有，可保留）
         server-addr: 192.168.1.33:8848
-        # 命名空间（和配置中心一致，可选）
-        namespace: public
-        # 服务分组（可选）
-        group: DEFAULT_GROUP
-        # 若Nacos开启了登录认证，需添加（禁用则注释）
-        # username: nacos
+        namespace: public  # 命名空间（和配置中心一致，可选）
+        group: DEFAULT_GROUP  # 服务分组（可选）
+        # username: nacos   # 若Nacos开启了登录认证，需添加（禁用则注释）
         # password: 你的Nacos密码
         # enable-remote-config: true  # 2.5.2适配：启用gRPC（默认开启，无需改）
         timeout: 10000  # 增加注册超时配置（核心：解决STARTING状态问题）
@@ -20,6 +17,8 @@ spring:
         heart-beat-timeout: 15000
         ephemeral: true   # 关闭EPHEMERAL（临时实例），避免注册失败
         fail-fast: false   # 新增：关闭SpringCloud的快速失败机制
+        # ip: 192.168.1.33 # 宿主机IP，避免Docker内网IP问题
+        # port: 8848
       config:
         server-addr: 192.168.1.33:8848
         file-extension: yml

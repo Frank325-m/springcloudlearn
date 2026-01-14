@@ -1,4 +1,4 @@
-package com.learn.user.common;
+package com.learn.order.common;
 
 import java.io.Serializable;
 

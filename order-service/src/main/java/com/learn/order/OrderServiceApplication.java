@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootApplication(exclude = {SentinelWebAutoConfiguration.class})
 @EnableDiscoveryClient  // 注册到Nacos
-@EnableFeignClients(basePackages="com.learn.order.feign") // 扫描feign包
+@EnableFeignClients(basePackages="com.learn.order.feign") // 开启Feign客户端,扫描feign包
 @MapperScan("com.learn.order.mapper") // 扫描mapper
 public class OrderServiceApplication {
     public static void main(String[] args) throws InterruptedException {

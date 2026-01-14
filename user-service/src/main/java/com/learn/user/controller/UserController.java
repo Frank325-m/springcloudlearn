@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.learn.user.common.Result;
+import com.learn.user.config.SentinelRuleChecker;
 import com.learn.user.entity.User;
 // import com.learn.user.mapper.UserMapper;
 import com.learn.user.service.UserService;
@@ -27,6 +29,9 @@ import com.learn.user.service.UserService;
 @RequestMapping("/user")
 @RefreshScope  // 关键：开启配置热更新，Nacos配置修改后自动刷新
 public class UserController {
+
+    @Autowired
+    SentinelRuleChecker sentinelRuleChecker;
 
     @Resource
     private UserService userService;
@@ -42,10 +47,7 @@ public class UserController {
     // @Resource
     // private UserMapper userMapper;
 
-    /**
-     * 根据ID查询用户
-     */
-    // 核心接口：添加Sentinel限流+降级
+    // 根据ID查询用户 核心接口：添加Sentinel限流+降级
     @GetMapping("/get/{id}")
     @SentinelResource(
         value="user-get", // 资源名（唯一标识）
@@ -53,6 +55,8 @@ public class UserController {
         fallback="userGetFallback" // 异常降级兜底方法
     )
     public Result<User> getUserById(@PathVariable Long id) {
+        sentinelRuleChecker.checkSentinelRules();
+
         User user = userService.getUserById(id);
         // User user = userMapper.selectById(id);
         if (user == null) {
@@ -61,9 +65,7 @@ public class UserController {
         return Result.success(user);
     }
 
-    /**
-     * 新增用户
-     */
+    // 新增用户
     @PostMapping("/add")
     public Result<String> addUser(@RequestBody  User user) {
         if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
@@ -74,9 +76,7 @@ public class UserController {
         return count > 0 ? Result.success("add user success, the id is " + user.getId()) : Result.error(500, "dd user failed");
     }
 
-    /**
-     * 修改用户
-     */
+    // 修改用户
     @PutMapping("/update")
     public Result<String> updateUser(@RequestBody  User user) {
         if (user.getId() == null) {
@@ -87,9 +87,7 @@ public class UserController {
         return count > 0 ? Result.success("update user success") : Result.error(500, "update user failed");
     }
 
-    /**
-     * 删除用户
-     */
+    // 删除用户
     @DeleteMapping("/delete/{id}")
     public Result<String> deleteUser(@PathVariable Long id) {
         int count = userService.deleteUser(id);
@@ -97,9 +95,7 @@ public class UserController {
         return count > 0 ? Result.success("delete user success") : Result.error(500, "delete user fialed");
     }
 
-    /**
-     * 获取所有用户
-     */
+    // 获取所有用户
     @GetMapping("/list")
     public Result<List<User>> getUserList() {
         List<User> users = userService.getUserList();

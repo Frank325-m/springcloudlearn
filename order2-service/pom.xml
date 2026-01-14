@@ -3,88 +3,72 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!-- 继承父工程 -->
     <parent>
           <groupId>com.learn</groupId>
           <artifactId>springcloud-learn</artifactId>
           <version>1.0.0</version>
     </parent>
 
-    <groupId>com.learn.user</groupId>
-    <artifactId>user-service</artifactId>
+    <groupId>com.learn.order2</groupId>
+    <artifactId>order2-service</artifactId>
     <version>1.0.0</version>
-    <name>user-service</name>
-    <description>负责用户的CRUD,注册到Nacos</description>
     <packaging>jar</packaging> <!-- 微服务打包为jar -->
 
-    <!-- 子模块专属依赖 -->
     <dependencies>
         <!-- SpringBoot Web核心 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!-- 关键：让bootstrap.yml生效的依赖（SpringBoot 2.4+必需） -->
+
+        <!-- Nacos服务发现（微服务调用必备） -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>3.1.0</version> <!-- 适配SpringBoot 2.7.x，和SpringCloud版本匹配 -->
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-        <!-- Feign远程调用 无需加版本，继承父工程（可选，调用user-service） -->
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <!-- Feign远程调用 无需加版本 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-        <!-- Nacos服务注册发现 （直接引入，绕过SpringCloud封装） -->
+        <!-- Feign 负载均衡核心依赖（必须加） -->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.alibaba.nacos</groupId>
-                    <artifactId>nacos-client</artifactId>
-                </exclusion>
-                <!-- 可选：解决 Nacos 和 Loadbalancer 冲突的依赖（防止后续报错） -->
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- 手动引入2.5.2客户端 -->
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <!-- 版本和nacos-discovery保持一致，建议用2021.1适配SpringBoot2.7 -->
-            <version>2021.1</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
 
         <!-- Sentinel核心依赖 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-            <version>2021.1</version>
         </dependency>
+
         <!-- Sentinel注解支持（@SentinelResource） -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-annotation-aspectj</artifactId>
-            <version>1.8.9</version>
         </dependency>
-        <!-- 关键缺失依赖：Sentinel Nacos数据源适配包 -->
+        
+        <!-- 关键：Sentinel Nacos数据源适配包 -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
-            <version>1.8.9</version>  <!-- 和Sentinel Dashboard版本一致（1.8.9） -->
         </dependency>
 
-        <!-- MyBatis-Plus -->
+        <!-- Seata 依赖（分布式事务） -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>
+
+        <!-- MyBatis-Plus（操作数据库） -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -96,15 +80,8 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.18</version>
-        </dependency>
     </dependencies>
 
-    <!-- 构建配置：打包为可执行jar -->
     <build>
         <plugins>
             <!-- SpringBoot打包插件（核心，解决main manifest问题） -->
@@ -120,10 +97,9 @@
                 </executions>
                 <!-- 可选：指定启动类（如果插件自动识别失败） -->
                 <configuration>
-                    <mainClass>com.learn.user.UserServiceApplication</mainClass>
+                    <mainClass>com.learn.order2.Order2ServiceApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -30,6 +30,8 @@
 		<module>user-service</module>
 		<module>order-service</module>
 		<module>gateway-service</module>
+		<module>storage-service</module>
+		<module>order2-service</module>
 	</modules>
 
 	<!-- 依赖版本锁定:子模块直接引用，无需写版本号 -->
@@ -101,14 +103,14 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
             </plugin>
         </plugins>
     </build>

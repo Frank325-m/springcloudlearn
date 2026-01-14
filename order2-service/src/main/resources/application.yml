@@ -1,0 +1,62 @@
+server: # 服务器配置
+  port: 8083   # 端口区别于order-service的8082，避免冲突
+
+spring:
+  application:
+    name: order2-service
+  config:
+    import:
+      - optional:nacos:${spring.application.name}
+      - optional:nacos:common-config  # 可选
+  cloud:
+    # Nacos配置
+    nacos:
+      server-addr: 192.168.1.33:8848
+      config:
+        namespace: public
+        group: DEFAULT_GROUP
+        file-extension: yml
+      discovery:
+        namespace: public
+        group: DEFAULT_GROUP
+  # Sentinel配置
+  sentinel:  
+    transport:
+      dashboard: 192.168.1.33:8858
+      port: 8721 # 与Gateway/OrderService端口区分
+  # 数据库配置
+  datasource:  
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.1.33:3306/learn_springcloud?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+# Seata 配置（使用 SCA 2021.0.5.0 内置的 1.5.2）
+seata:
+  tx-service-group: default_tx_group  # 事务组名（必须和Seata Server一致）
+  service:
+    vgroup-mapping:
+      default_tx_group: default # 事务组映射（固定写法）
+  registry:
+    type: nacos  # 从Nacos找Seata Server
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr}
+      # namespace: ${spring.cloud.nacos.config.namespace}
+      namespace: ""
+      group: DEFAULT_GROUP
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr}
+      namespace: ""
+      group: SEATA_GROUP
+# MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.learn.order2.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 确认mapper包路径正确
+logging:
+  level:
+    com.learn.order2.mapper: debug
